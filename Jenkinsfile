@@ -51,9 +51,11 @@ pipeline {
         }
         stage('Deploy to Kubernetes') {
             steps {
-                withKubeConfig(credentialsId: 'k8s-kubeconfig-id', serverUrl: 'https://kubernetes.docker.internal:6443') {
-                    // Use 'bat' instead of 'sh' for Windows compatibility
-                    bat 'powershell -Command "(Get-Content deployment.yaml) -replace \'image:.*\', \'image: index.docker.io/thilak0402/traffic-dashboard:${env.BUILD_NUMBER}\' | Set-Content deployment.yaml"'
+                withCredentials([file(credentialsId: 'k8s-kubeconfig-id', variable: 'KUBECONFIG')]) {
+                    // Update deployment image tag using PowerShell on Windows
+                    bat "powershell -Command \"(Get-Content deployment.yaml) -replace 'image:.*', 'image: index.docker.io/thilak0402/traffic-dashboard:${env.BUILD_NUMBER}' | Set-Content deployment.yaml\""
+                    
+                    // Apply Kubernetes deployment directly
                     bat 'kubectl apply -f deployment.yaml'
                 }
             }
