@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: traffic-dashboard
-        image: your-dockerhub-username/traffic-dashboard:latest
+        image: thilak0402/traffic-dashboard:latest
         ports:
         - containerPort: 80
 ---
