@@ -1,1 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Intelligent Traffic Signal & Congestion Management</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f6f9; margin: 0; padding: 20px; }
+        .container { max-width: 1200px; margin: auto; }
+        h1 { color: #333; }
+        .card { background: white; padding: 20px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: #007bff; color: white; }
+        .badge { padding: 5px 10px; border-radius: 4px; color: white; font-weight: bold; }
+        .Low { background: #28a745; }
+        .Moderate { background: #ffc107; color: black; }
+        .High { background: #fd7e14; }
+        .Critical { background: #dc3545; }
+        .alert { background: #f8d7da; color: #721c24; padding: 10px; border: 1px solid #f5c6cb; border-radius: 4px; margin-bottom: 15px; }
+        .advisory { background: #d1ecf1; color: #0c5460; padding: 10px; border-radius: 4px; margin-top: 10px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Urban Traffic Control Authority Dashboard</h1>
+    
+    <div id="alert-box" class="alert" style="display:none;">
+        <strong>⚠️ ALERT:</strong> Vehicle waiting time exceeds 120 seconds at one or more intersections!
+    </div>
 
+    <div class="card">
+        <h3>Live Intersection Status</h3>
+        <table id="traffic-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Location</th>
+                    <th>Vehicle Count</th>
+                    <th>Avg Waiting Time (s)</th>
+                    <th>Signal Status</th>
+                    <th>Congestion Level</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Populated via JS -->
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card">
+        <h3>Advisories & Road Closures</h3>
+        <div class="advisory">🚨 <strong>Emergency Vehicle Priority:</strong> Corridor B-4 cleared for Ambulance dispatch.</div>
+        <div class="advisory">🚧 <strong>Road Closure:</strong> Main Street Bridge closed due to maintenance. Diversion active via 4th Avenue.</div>
+    </div>
+</div>
+
+<script>
+    const data = [
+        { id: "INT-01", location: "Central & 1st", count: 85, wait: 95, signal: "Green", level: "Low" },
+        { id: "INT-02", location: "Market & 5th", count: 140, wait: 135, signal: "Red", level: "Critical" },
+        { id: "INT-03", location: "Station Road", count: 110, wait: 115, signal: "Yellow", level: "Moderate" },
+        { id: "INT-04", location: "North Highway", count: 165, wait: 145, signal: "Red", level: "Critical" },
+        { id: "INT-05", location: "University Ave", count: 70, wait: 60, signal: "Green", level: "Low" }
+    ];
+
+    const tbody = document.querySelector("#traffic-table tbody");
+    let alertTriggered = false;
+
+    data.forEach(item => {
+        if (item.wait > 120) alertTriggered = true;
+        const row = `<tr>
+            <td>${item.id}</td>
+            <td>${item.location}</td>
+            <td>${item.count}</td>
+            <td>${item.wait}</td>
+            <td>${item.signal}</td>
+            <td><span class="badge ${item.level}">${item.level}</span></td>
+        </tr>`;
+        tbody.innerHTML += row;
+    });
+
+    if (alertTriggered) {
+        document.getElementById("alert-box").style.display = "block";
+    }
+</script>
+</body>
+</html>
