@@ -7,7 +7,7 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                git branch: 'main', url: 'https://github.com/your-username/urban-traffic-management.git'
+                git branch: 'main', url: 'https://github.com/Thilak0402/Agile_Fat.git'
             }
         }
         stage('Parallel Quality Checks') {
@@ -30,7 +30,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    dockerImage = docker.build("your-dockerhub-username/traffic-dashboard:${env.BUILD_NUMBER}")
+                    dockerImage = docker.build("thilak0402/traffic-dashboard:${env.BUILD_NUMBER}")
                 }
             }
         }
